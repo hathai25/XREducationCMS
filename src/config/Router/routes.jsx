@@ -10,6 +10,6 @@ export const ROUTES = [
     {
         path: '/lesson',
         element: <Lessons/>,
-    }
+    },
 ]
 
