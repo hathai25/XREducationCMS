@@ -18,6 +18,7 @@ const AuthProvider = ({children}) => {
     const signInUser = (success, error) => {
         if (success) {
             localStorage.setItem("token", success?.token);
+            localStorage.setItem("expires", success?.expires);
             setAuthData({
                 expires: success?.expires,
                 token: success?.token,
@@ -47,10 +48,12 @@ const AuthProvider = ({children}) => {
     useEffect(() => {
         const getAuthUser = () => {
             const token = localStorage.getItem("token");
+            const expires = localStorage.getItem("expires");
 
-            if (!token) {
+            if (!token || (Date.now() >= expires*1000)) {
                 setAuthData({
-                    user: undefined,
+                    expires: null,
+                    token: null,
                     isLoading: false,
                     isAuthenticated: false,
                 });

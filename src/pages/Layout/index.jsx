@@ -5,13 +5,15 @@ import {useLocation} from "react-router-dom";
 import {MAP_PATHNAME_TO_BREADCRUMB} from "../../constants.js";
 import {LogoutOutlined} from "@ant-design/icons";
 import PropTypes from "prop-types";
-import {useAuth} from "../../context/Auth/AuthProvider.jsx";
 import Login from "../Login/index.jsx";
 
 
 const Layout = ({children}) => {
     const {pathname} = useLocation();
     const token = localStorage.getItem("token");
+    const expires = localStorage.getItem("expires");
+    const isValidToken = token && (Date.now() <= expires*1000);
+    console.log({isValidToken})
 
     const breadCrumbItems = [
         {title: "Home", href: "/"},
@@ -21,7 +23,7 @@ const Layout = ({children}) => {
 
     return (
         <>
-            {token ? (
+            {isValidToken ? (
                 <Row>
                     <Col xs={3}>
                         <Sidebar/>
