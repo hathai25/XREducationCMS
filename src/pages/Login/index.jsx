@@ -20,12 +20,6 @@ const Login = () => {
     const { send } = useCallApi({
         success: onSuccess,
         useToastShowError: true,
-        // error: () => {
-        //     notification.error({
-        //         message: "Login failed",
-        //         description: "Please check your username and password"
-        //     })
-        // },
         callApi: loginUser
     })
 

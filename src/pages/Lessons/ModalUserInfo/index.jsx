@@ -17,7 +17,9 @@ const ModalUserInfo = ({visible, handleCancel, userId}) => {
     const onError = (error) => {
         notification.error({
             message: 'Error',
-            description: error?.message
+            description: error?.message,
+            duration: 1,
+            maxCount: 1
         })
         setUserInfo(null)
     }
