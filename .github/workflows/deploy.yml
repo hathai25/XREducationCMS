@@ -1,0 +1,41 @@
+name: Create Merge Request
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  create_merge_request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create Merge Request
+        run: |
+          # Replace the placeholders with your own values
+          BASE_BRANCH=main
+          HEAD_BRANCH=${{ github.ref }}
+          REPO_OWNER=hathai25
+          REPO_NAME=XREducationCMS
+          
+          # Get the access token with the necessary permissions
+          TOKEN=${{ secrets.GITHUB_TOKEN }}
+          
+          # Create the merge request using the GitHub REST API
+          response=$(curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            -d '{
+              "title": "New Merge Request",
+              "head": "$HEAD_BRANCH",
+              "base": "$BASE_BRANCH"
+            }' \
+            "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/pulls")
+          
+          # Extract the merge request URL from the API response
+          merge_request_url=$(echo "$response" | jq -r '.html_url')
+          
+          echo "Merge request created: $merge_request_url"
